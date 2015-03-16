@@ -1,6 +1,8 @@
 boot/*
 dev/*
+etc/ssh/ssh_host_*
 etc/udev/rules.d/70-persistent-net.rules
+initrd.img
 proc/*
 root/.bash_history
 root/.ssh/*
@@ -11,4 +13,4 @@ var/log/*.log
 var/log/*/*.log
 var/run/*
 var/tmp/*
-etc/ssh/ssh_host_*
+vmlinuz
