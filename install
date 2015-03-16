@@ -61,7 +61,7 @@ echo "==> Installing Guest tools in $INSTALL_DIR"
 cp -r ./guest-tools/lib/smartdc $INSTALL_DIR/lib/
 cp -r ./guest-tools/usr/sbin/mdata-* $INSTALL_DIR/usr/sbin/
 cp -r ./guest-tools/usr/share/man/man1/mdata-* $INSTALL_DIR/usr/share/man/man1/
-cp ./guest-tools/lib/smartdc/joyent_rc.local $INSTALL_DIR/etc/rc.d/rc.local
+cp ./guest-tools/lib/smartdc/joyent_rc.local $INSTALL_DIR/etc/rc.local
 echo "==> Done!"
 sleep 1 
 
