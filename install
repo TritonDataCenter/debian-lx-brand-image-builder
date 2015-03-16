@@ -31,7 +31,8 @@ chroot $INSTALL_DIR apt-get  -y update
 chroot $INSTALL_DIR apt-get  -y install openssh-server vim wget curl less
 
 echo "==> Cleaning up linux-image packages"
-chroot $INSTALL_DIR apt-get -y purge linux-image* && chroot $INSTALL_DIR apt-get -y autoremove
+chroot $INSTALL_DIR apt-get -y purge linux-image*
+chroot $INSTALL_DIR apt-get -y autoremove
 
 
 echo "==> Setting TZ to UTC"
