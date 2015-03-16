@@ -106,7 +106,7 @@ cat <<EOF
   "owner": "00000000-0000-0000-0000-000000000000",
   "tags": {
     "role": "os",
-    "kernel_version": "2.6.32"
+    "kernel_version": "3.4.105"
   }
 }
 EOF
