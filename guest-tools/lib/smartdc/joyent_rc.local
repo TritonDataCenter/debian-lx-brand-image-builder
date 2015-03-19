@@ -79,6 +79,12 @@ if [[ ! -f /root/.ssh/authorized_keys ]]; then
     esac
 fi
 
+keycount=$(find /etc/ssh -name 'ssh_host_*_key*' | wc -l)
+if [[ $keycount -eq 0 ]] ; then 
+  echo "ssh_host keys missing. Regenerating..."
+  dpkg-reconfigure openssh-server
+fi
+
 # XXX tmpfs?
 # XXX resolvers
 # XXX static routes
