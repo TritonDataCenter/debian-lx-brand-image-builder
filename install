@@ -30,6 +30,7 @@ chroot $INSTALL_DIR apt-get -y clean
 chroot $INSTALL_DIR apt-get -y update
 chroot $INSTALL_DIR apt-get -y install locales
 echo "en_US.UTF-8 UTF-8" > $INSTALL_DIR/etc/locale.gen
+echo "LANG=\"en_US.UTF-8\"" > $INSTALL_DIR/etc/default/locale
 chroot $INSTALL_DIR locale-gen
 
 echo "==> Installing packages..."
