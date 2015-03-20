@@ -26,15 +26,14 @@ debootstrap wheezy $INSTALL_DIR http://http.debian.net/debian/
 echo "==> Done!"
 
 echo "==> Settting locale to en_US.UTF-8"
-echo "LANG=\"en_US.UTF-8\"" > $INSTALL_DIR/etc/default/locale
-chroot $INSTALL_DIR locale-gen en_US.UTF-8
-chroot $INSTALL_DIR dpkg-reconfigure -f noninteractive locales
-
-dpkg-reconfigure -f noninteractive locales
-echo "==> Installing packages..."
 chroot $INSTALL_DIR apt-get  -y clean
 chroot $INSTALL_DIR apt-get  -y update
-chroot $INSTALL_DIR apt-get  -y install openssh-server vim wget curl less locales man
+chroot $INSTALL_DIR apt-get  -y install locales
+echo "en_US.UTF-8 UTF-8" > $INSTALL_DIR/etc/locale.gen
+chroot $INSTALL_DIR locale-gen
+
+echo "==> Installing packages..."
+chroot $INSTALL_DIR apt-get  -y install openssh-server vim wget curl less man
 
 echo "==> Cleaning up linux-image packages"
 chroot $INSTALL_DIR apt-get -y purge linux-image*
