@@ -26,9 +26,9 @@ debootstrap wheezy $INSTALL_DIR http://http.debian.net/debian/
 echo "==> Done!"
 
 echo "==> Settting locale to en_US.UTF-8"
-chroot $INSTALL_DIR apt-get  -y clean
-chroot $INSTALL_DIR apt-get  -y update
-chroot $INSTALL_DIR apt-get  -y install locales
+chroot $INSTALL_DIR apt-get -y clean
+chroot $INSTALL_DIR apt-get -y update
+chroot $INSTALL_DIR apt-get -y install locales
 echo "en_US.UTF-8 UTF-8" > $INSTALL_DIR/etc/locale.gen
 chroot $INSTALL_DIR locale-gen
 
@@ -38,6 +38,7 @@ chroot $INSTALL_DIR apt-get  -y install openssh-server vim wget curl less man
 echo "==> Cleaning up linux-image packages"
 chroot $INSTALL_DIR apt-get -y purge linux-image*
 chroot $INSTALL_DIR apt-get -y autoremove
+chroot $INSTALL_DIR apt-get -y clean
 
 
 echo "==> Setting TZ to UTC"
