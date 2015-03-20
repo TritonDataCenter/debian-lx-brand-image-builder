@@ -34,7 +34,7 @@ echo "LANG=\"en_US.UTF-8\"" > $INSTALL_DIR/etc/default/locale
 chroot $INSTALL_DIR locale-gen
 
 echo "==> Installing packages..."
-chroot $INSTALL_DIR apt-get  -y install openssh-server vim wget curl less man-db
+chroot $INSTALL_DIR apt-get -y install openssh-server vim wget curl less man-db
 
 echo "==> Cleaning up linux-image packages"
 chroot $INSTALL_DIR apt-get -y purge linux-image*
