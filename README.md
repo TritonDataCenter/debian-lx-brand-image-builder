@@ -1,4 +1,4 @@
-# CentOS lx-brand Image Builder
+# Debian lx-brand Image Builder
 
 This is a collection of scripts used for creating an LX-brand Debian image.
 
@@ -6,7 +6,8 @@ This is a collection of scripts used for creating an LX-brand Debian image.
 
 In order to use these scripts you'll need:
 
-- Debian running in a VM or bare metal (required for the `install` script) 
+- Debian running in a VM or bare metal (required for the `install` script)
+- debootstrap: `apt-get install -y debootstrap`
 - A SmartOS (or SDC headnode) install (required for the `create-lx-image` script)
 
 ## Usage
