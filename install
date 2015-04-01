@@ -9,6 +9,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 INSTALL_DIR=/data/chroot
+MIRROR=http://http.debian.net/debian/
 NAME="Debian 7 LX Brand"
 BUILD_DATE=$(date +%Y%m%d)
 DOCS="https://docs.joyent.com/images/lx-brand-beta"
@@ -22,7 +23,7 @@ if [ -d $INSTALL_DIR ]; then
   mkdir -p $INSTALL_DIR
 fi
 
-debootstrap wheezy $INSTALL_DIR http://http.debian.net/debian/
+debootstrap wheezy $INSTALL_DIR $MIRROR
 echo "==> Done!"
 
 echo "==> Settting locale to en_US.UTF-8"
