@@ -9,7 +9,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 INSTALL_DIR=/data/chroot
-MIRROR=http://http.debian.net/debian/
+MIRROR=http://httpredir.debian.org/debian/
 NAME="Debian 7 LX Brand"
 BUILD_DATE=$(date +%Y%m%d)
 DOCS="https://docs.joyent.com/images/lx-brand-beta"
