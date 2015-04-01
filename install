@@ -66,7 +66,7 @@ fi
 
 echo "==> Installing Debian into $INSTALL_DIR"
 
-if [ -d $INSTALL_DIR ]; then
+if [[ -d $INSTALL_DIR ]]; then
   echo "====> Found previous chroot. Deleting and creating a new one."
   rm -rf $INSTALL_DIR
   mkdir -p $INSTALL_DIR
