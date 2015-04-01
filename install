@@ -68,6 +68,11 @@ if [[ ! -e "$INSTALL_DIR" ]] ; then
   exit 1
 fi
 
+if [[ -z ${MIRROR} ]]; then
+  echo "Error: missing mirror (-m) value"
+  exit 1
+fi
+
 if [[ -z ${DOCS} ]]; then
   DOCS="https://docs.joyent.com/images/lx-brand-beta"
 fi
