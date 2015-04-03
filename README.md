@@ -12,5 +12,5 @@ In order to use these scripts you'll need:
 
 ## Usage
 
-1. Run `./install ./install -d <chroot> -m <mirror>` uunder Debian to install Debian 7 in a given directory. This will create a tarball of the installation in your working directory (named `debian-7-lx-$YYMMDD.tar.gz`). See `./install -h` for usage.
+1. Run `./install -d <chroot> -m <mirror> -i <image name> -p <proper name> -u <image docs` uunder Debian to install Debian 7 in a given directory. See `./install -h` for detailed usage. This will create a tarball of the installation in your working directory (named `debian-7-lx-$YYMMDD.tar.gz`). See `./install -h` for usage.
 2. Copy the tarball to a SmartOS machine or SDC headnode and run `./create-lx-image -t debian-7-lx-$YYMMDD.tar.gz` (substituting the name of your tar file). This will create the image file and manifest.
