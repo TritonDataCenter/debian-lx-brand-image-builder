@@ -8,25 +8,38 @@ set -euo pipefail
 IFS=$'\n\t'
 
 BUILD_DATE=$(date +%Y%m%d)
-IMAGE_NAME="lx-debian-7"
-tarball=
-iuuid=${IMAGE_NAME}-$BUILD_DATE
+TARBALL=
+KERNEL=
+MIN_PLATFORM=
+IMAGE_NAME=
+DESC=
+DOCS=
+
 
 usage() {
 cat <<EOF
 
-  Usage: $0 -t {path to archive}
+Create an lx brand Debian image from a given tar file
 
-  Create an lx brand Debian image from a given tar file
+Usage:
+  $0 -t <TARBALL> -k <KERNEL> -m <MIN_PLATFORM> -i <IMAGE_NAME> -d <DESC> -u <DOCS>
 
-  OPTIONS:
-  -t The path to the tar archive
+Example:
+  $0 -t /var/tmp/lx-debian-7-20150408.tar.gz -k 3.13.0 -m 20150316T201553Z -i lx-debian-7 -d "Debian 7 64-bit lx-brand image." -u https://docs.joyent.com/images/lx-brand-beta
+    
+OPTIONS:
+  -t The full path to the tar archive
+  -k The kernel version
+  -m The minimum platform required for the image
+  -i The name of the image as it would appear in the manifest
+  -d The description of the image as it would appear in the manifest
+  -u The homepage link of the image as it would appear in the manifest
   -h Show this message
 
 EOF
 }
 
-while getopts "ht:" OPTION
+while getopts "ht:k:m:i:d:u:" OPTION
 do
   case $OPTION in
     h)
@@ -34,7 +47,22 @@ do
       exit 1
       ;;
     t)
-      tarball="$OPTARG"
+      TARBALL=${OPTARG}
+      ;;
+    k)
+      KERNEL=${OPTARG}
+      ;;
+    m)
+      MIN_PLATFORM=${OPTARG}
+      ;;
+    i)
+      IMAGE_NAME=${OPTARG}
+      ;;
+    d)
+      DESC=${OPTARG}
+      ;;
+    u)
+      DOCS=${OPTARG}
       ;;
     ?)
       usage
@@ -44,31 +72,57 @@ do
 done
 
 
-if [[ -z $tarball ]]; then
+if [[ -z $TARBALL ]]; then
   echo "==> ERROR: the install archive is required"
   usage
   exit 1
 fi
 
-if [[ ! -a "$tarball" ]]; then
-  printf "==> ERROR: %s: file or directory not found\n" $tarball
+if [[ ! -a "$TARBALL" ]]; then
+  printf "==> ERROR: %s: file or directory not found\n" $TARBALL
   exit 1
 fi
 
-if [[ "$(echo $tarball | cut -c 1)" != "/" ]]; then
-  printf "==> Pathname '%s' specified to -t must be absolute\n" $tarball
+if [[ "$(echo $TARBALL | cut -c 1)" != "/" ]]; then
+  printf "==> Pathname '%s' specified to -t must be absolute\n" $TARBALL
   exit 1
 fi
 
-if [[ ! -r "$tarball" ]]; then
-  printf "==> Cannot read file '%s'\n" $tarball
+if [[ ! -r "$TARBALL" ]]; then
+  printf "==> Cannot read file '%s'\n" $TARBALL
   exit 1
 fi
 
-if [[ ! -f "$tarball" ]]; then
+if [[ ! -f "$TARBALL" ]]; then
   echo "==> ERROR: must be a gzip, bzip2, .Z or uncompressed tar archive"
   exit 1
 fi
+
+if [[ -z ${KERNEL} ]]; then
+  echo "Error: missing kernel version (-k) value"
+  exit 1
+fi
+
+if [[ -z ${MIN_PLATFORM} ]]; then
+  echo "Error: missing minimum platform (-m) value"
+  exit 1
+fi
+
+if [[ -z ${IMAGE_NAME} ]]; then
+  echo "Error: missing image name (-i) value"
+  exit 1
+fi
+
+if [[ -z ${DESC} ]]; then
+  cho "Error: missing image description (-d) value"
+    exit 1
+fi
+
+if [[ -z ${DOCS} ]]; then
+  DOCS="https://docs.joyent.com/images/lx-brand-beta"
+fi
+
+IUUID=${IMAGE_NAME}-$BUILD_DATE
 
 filetype=$({ LC_ALL=C file $tarball | awk '{print $2}' ; } 2>/dev/null)
 
@@ -182,7 +236,7 @@ create_file() {
 
 create_manifest() {
   echo "==> Creating manifest file..."
-  ./create-manifest -f ${IMAGE_NAME}-${BUILD_DATE}.zfs.gz -n ${IMAGE_NAME} -v ${BUILD_DATE} -d "${IMAGE_NAME} ${BUILD_DATE} LX-brand BETA image." -h https://docs.joyent.com/images/lx-brand-beta/debian > ${IMAGE_NAME}-${BUILD_DATE}.json
+  ./create-manifest -f ${IMAGE_NAME}-${BUILD_DATE}.zfs.gz -k ${KERNEL} -m ${MIN_PLATFORM} -n ${IMAGE_NAME} -v ${BUILD_DATE} -d ${DESC} -h ${DOCS} > ${IMAGE_NAME}-${BUILD_DATE}.json
   echo "==> done!"
   echo "==>"
 }
