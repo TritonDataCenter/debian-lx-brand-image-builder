@@ -44,7 +44,7 @@ OPTIONS:
 
 Example:
 
-    $0 -f debian-7-20150319.zfs.gz -k 3.13.0 -m 20150316T201553Z -n lx-debian-7 -v 20150319
+    $0 -f debian-7-20150319.zfs.gz -k 3.4.105 -m 20150316T201553Z -n lx-debian-7 -v 20150319
 
 USAGE
     exit 1
