@@ -141,12 +141,12 @@ fi
 
 gtaropts="${gtaropts}f"
 
-zpath="/zones/$iuuid"
-zroot="/zones/$iuuid/root"
+zpath="/zones/$IUUID"
+zroot="/zones/$IUUID/root"
 
 create_dataset() {
   echo "==> Creating dataset for image creation..."
-  zfs create zones/$iuuid
+  zfs create zones/$IUUID
   chmod 700 $zpath
 
   mkdir $zpath/root
@@ -155,7 +155,7 @@ create_dataset() {
   mkdir $zpath/cores
   chmod 755 $zpath/cores
 
-  echo "==> The dataset is zones/$iuuid"
+  echo "==> The dataset is zones/$IUUID"
   echo "==>"
 }
 
@@ -164,7 +164,7 @@ install_tar() {
   ( cd "$zroot" && gtar --strip-components=2 "$gtaropts" "$TARBALL" )
   if [[ "$?" -ne "0" ]] ; then
     echo "==> Error: extraction from tar archive failed."
-    zfs destroy -r zones/$iuuid
+    zfs destroy -r zones/$IUUID
   fi
 }
 
@@ -221,14 +221,14 @@ create_file() {
   echo "==> Creating image file:"
   
   echo "====> Creating snapshot..."
-  zfs snapshot zones/$iuuid@final
+  zfs snapshot zones/$IUUID@final
   
   echo "====> Doing a zfs send. This may take a few minutes..."
-  zfs send zones/$iuuid@final | gzip -9 > ${IMAGE_NAME}-${BUILD_DATE}.zfs.gz
+  zfs send zones/$IUUID@final | gzip -9 > ${IMAGE_NAME}-${BUILD_DATE}.zfs.gz
   echo "====> Done."
   
   echo "====> Cleaning up..."
-  zfs destroy -r zones/$iuuid
+  zfs destroy -r zones/$IUUID
   
   echo "==> Image File created!"
   echo "==>"
