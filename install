@@ -131,6 +131,18 @@ fi
 debootstrap $RELEASE $INSTALL_DIR $MIRROR
 echo "==> Done!"
 
+echo "==> Updating $INSTALL_DIR/etc/apt/sources.list"
+cat << SOURCES > $INSTALL_DIR/etc/apt/sources.list
+deb http://httpredir.debian.org/debian $RELEASE main
+deb-src http://httpredir.debian.org/debian $RELEASE main
+
+deb http://httpredir.debian.org/debian $RELEASE-updates main
+deb-src http://httpredir.debian.org/debian $RELEASE-updates main
+
+deb http://security.debian.org/ $RELEASE/updates  main
+deb-src http://security.debian.org/ $RELEASE/updates  main
+SOURCES
+
 echo "==> Settting locale to en_US.UTF-8"
 chroot $INSTALL_DIR apt-get -y clean
 chroot $INSTALL_DIR apt-get -y update
