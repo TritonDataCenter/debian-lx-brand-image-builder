@@ -156,8 +156,11 @@ chroot $INSTALL_DIR apt-get -y install openssh-server vim wget curl less man-db 
 
 echo "==> Cleaning up linux-image packages"
 chroot $INSTALL_DIR apt-get -y purge linux-image*
+
+echo "==> Cleaning up caches etc."
 chroot $INSTALL_DIR apt-get -y autoremove
 chroot $INSTALL_DIR apt-get -y clean
+rm -rf $INSTALL_DIR/var/lib/apt/lists/*
 
 
 echo "==> Setting TZ to UTC"
