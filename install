@@ -130,7 +130,7 @@ fi
 
 debootstrap --variant=minbase --components=main \
     --include=net-tools,rsyslog,openssh-server,sudo \
-    --force-check-gpg $RELEASE $INSTALL_DIR $MIRROR
+    $RELEASE $INSTALL_DIR $MIRROR
 echo "==> Done!"
 
 echo "==> Updating $INSTALL_DIR/etc/apt/sources.list"
