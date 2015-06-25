@@ -129,7 +129,7 @@ if [[ -d $INSTALL_DIR ]]; then
 fi
 
 debootstrap --components=main \
-    --include=cron,inetutils-ping,iproute,net-tools,rsyslog,openssh-server,sudo,vim-tiny \
+    --include=openssh-server,sudo,vim-tiny \
     $RELEASE $INSTALL_DIR $MIRROR
 echo "==> Done!"
 
