@@ -151,8 +151,8 @@ deb-src http://security.debian.org/ $RELEASE/updates  main
 SOURCES
 
 echo "==> Updating packages"
-chroot $INSTALL_DIR apt-get -y update
-chroot $INSTALL_DIR apt-get -y upgrade
+chroot $INSTALL_DIR apt-get -y DEBIAN_FRONTEND=noninteractive; update
+chroot $INSTALL_DIR apt-get -y DEBIAN_FRONTEND=noninteractive; upgrade
 
 echo "==> Cleaning up caches etc."
 chroot $INSTALL_DIR apt-get -y autoremove
