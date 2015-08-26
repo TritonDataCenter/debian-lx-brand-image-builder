@@ -133,6 +133,10 @@ debootstrap --components=main \
     $RELEASE $INSTALL_DIR $MIRROR
 echo "==> Done!"
 
+echo "==> Setting TZ to UTC"
+rm $INSTALL_DIR/etc/localtime
+cp $INSTALL_DIR/usr/share/zoneinfo/UTC $INSTALL_DIR/etc/localtime
+
 echo "==> Setting locale to en_US.UTF-8"
 echo "en_US.UTF-8 UTF-8" >> $INSTALL_DIR/etc/locale.gen
 echo "LANG=\"en_US.UTF-8\"" > $INSTALL_DIR/etc/default/locale
@@ -158,11 +162,6 @@ chroot $INSTALL_DIR apt-get -y upgrade
 echo "==> Cleaning up caches etc."
 chroot $INSTALL_DIR apt-get -y autoremove
 chroot $INSTALL_DIR apt-get -y clean
-
-
-echo "==> Setting TZ to UTC"
-rm $INSTALL_DIR/etc/localtime
-cp $INSTALL_DIR/usr/share/zoneinfo/UTC $INSTALL_DIR/etc/localtime
 
 echo "==> Disabling PasswordAuthentication"
 sed s/PasswordAuthentication\ yes/PasswordAuthentication\ no/ -i $INSTALL_DIR/etc/ssh/sshd_config
