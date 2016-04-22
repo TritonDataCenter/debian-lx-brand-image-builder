@@ -171,7 +171,7 @@ if [[ "$(. /etc/os-release && echo $VERSION_ID)" -ge 8 ]]; then
   Package: udev
   Pin: release *
   Pin-Priority: -1
-  UDEV
+UDEV
 fi
 
 echo "==> Cleaning up caches etc."
