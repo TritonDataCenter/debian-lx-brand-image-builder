@@ -158,7 +158,7 @@ SOURCES
 echo "==> Updating packages"
 export DEBIAN_FRONTEND=noninteractive
 chroot $INSTALL_DIR apt-get -y update
-#chroot $INSTALL_DIR apt-get -y upgrade
+chroot $INSTALL_DIR apt-get -y upgrade
 
 # Get release version via os-release
 CHECK_VERSION=$(. $INSTALL_DIR/etc/os-release && echo $VERSION_ID)
@@ -174,9 +174,12 @@ fi
 if [[ "$CHECK_VERSION" -ge 8 ]]; then
   # Pin udev version for Debian 8 and newer
   # See https://github.com/joyent/smartos-live/issues/596
-  echo "Removing udev package"
-  chroot $INSTALL_DIR apt-get -y remove udev
-  chroot $INSTALL_DIR apt-get autoremove
+  echo "==> Pinning udev package"
+  cat << UDEV > $INSTALL_DIR/etc/apt/preferences.d/udev
+  Package: udev
+  Pin: release *
+  Pin-Priority: -1
+UDEV
 
   # Systemd overrides for systemd-timedated and systemd-hostnamed
   # in Debian 8 and newer
