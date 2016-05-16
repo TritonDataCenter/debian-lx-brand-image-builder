@@ -177,7 +177,6 @@ if [[ "$CHECK_VERSION" -ge 8 ]]; then
   echo "Removing udev package"
   chroot $INSTALL_DIR apt-get -y remove udev
   chroot $INSTALL_DIR apt-get autoremove
-UDEV
 
   # Systemd overrides for systemd-timedated and systemd-hostnamed
   # in Debian 8 and newer
