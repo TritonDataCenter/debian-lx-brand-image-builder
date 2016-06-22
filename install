@@ -161,6 +161,7 @@ chroot $INSTALL_DIR apt-get -y update
 chroot $INSTALL_DIR apt-get -y upgrade
 
 # Get release version via os-release
+VERSION_ID=
 CHECK_VERSION=$(. $INSTALL_DIR/etc/os-release && echo $VERSION_ID)
 
 echo "==> Installing additional packages"
