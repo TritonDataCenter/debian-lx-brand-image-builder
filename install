@@ -33,7 +33,6 @@ OPTIONS:
   -u A URL to the image docs [optional]
   -h Show this message
 
-
 EOF
 }
 
@@ -172,7 +171,6 @@ else
 	chroot $INSTALL_DIR apt-get -y install --no-install-recommends python-software-properties software-properties-common
 fi
 
-
 if [[ "$CHECK_VERSION" -ge 8 ]]; then
 	# Pin udev version for Debian 8 and newer
 	# See https://github.com/joyent/smartos-live/issues/596
@@ -247,6 +245,7 @@ echo "====> Running ./install.sh -i $INSTALL_DIR"
 	cd $GUESTTOOLS
 	./install.sh -i $INSTALL_DIR
 )
+
 echo "==> Installing dtracetools-lx in $INSTALL_DIR"
 echo "====> Downloading package and SHASUMs from https://us-east.manta.joyent.com/joyentsoln/public/"
 
