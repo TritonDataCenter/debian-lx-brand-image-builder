@@ -47,91 +47,91 @@ DOCS=
 
 while getopts "hr:d:m:i:p:D:u:" OPTION
 do
-  case $OPTION in
-    h)
-      usage
-      exit
-      ;;
-    r)
-      RELEASE=${OPTARG}
-      ;;
-    d)
-      INSTALL_DIR=${OPTARG%/}
-      ;;
-    m)
-      MIRROR=${OPTARG}
-      ;;
-    i)
-      IMAGE_NAME=${OPTARG}
-      ;;
-    p)
-      NAME=${OPTARG}
-      ;;
-    D)
-      DESC=${OPTARG}
-      ;;
-    u)
-      DOCS=${OPTARG}
-      ;;
-    \?)
-      usage
-      exit
-      ;;
-  esac
+	case $OPTION in
+		h)
+			usage
+			exit
+			;;
+		r)
+			RELEASE=${OPTARG}
+			;;
+		d)
+			INSTALL_DIR=${OPTARG%/}
+			;;
+		m)
+			MIRROR=${OPTARG}
+			;;
+		i)
+			IMAGE_NAME=${OPTARG}
+			;;
+		p)
+			NAME=${OPTARG}
+			;;
+		D)
+			DESC=${OPTARG}
+			;;
+		u)
+			DOCS=${OPTARG}
+			;;
+		\?)
+			usage
+			exit
+			;;
+	esac
 done
 
 if [[ $# -eq 0 ]]; then
-  usage
-  exit 1
+	usage
+	exit 1
 fi
 
 if [[ -z ${RELEASE} ]]; then
-  echo "Error: missing release (-r) value"
-  exit 1
+	echo "Error: missing release (-r) value"
+	exit 1
 fi
 
 if [[ ! -e ${INSTALL_DIR} ]] ; then
-  echo "Directory $INSTALL_DIR not found"
-  exit 1
+	echo "Directory $INSTALL_DIR not found"
+	exit 1
 fi
 
 if [[ -z ${INSTALL_DIR} ]]; then
-  echo "Error: missing install directory (-d) value"
-  exit 1
+	echo "Error: missing install directory (-d) value"
+	exit 1
 fi
 
 if [[ -z ${MIRROR} ]]; then
-  echo "Error: missing mirror (-m) value"
-  exit 1
+	echo "Error: missing mirror (-m) value"
+	exit 1
 fi
 
 if [[ -z ${IMAGE_NAME} ]]; then
-  echo "Error: missing image name (-i) value"
-  exit 1
+	echo "Error: missing image name (-i) value"
+	exit 1
 fi
 
 if [[ -z ${NAME} ]]; then
-  echo "Error: missing proper name (-p) value"
-  exit 1
+	echo "Error: missing proper name (-p) value"
+	exit 1
 fi
 
 TARGET="${IMAGE_NAME}-${BUILD_DATE}.tar.gz"
 
 if [[ -z ${DOCS} ]]; then
-  DOCS="https://docs.joyent.com/images/container-native-linux"
+	DOCS="https://docs.joyent.com/images/container-native-linux"
 fi
 
 echo "==> Installing Debian into $INSTALL_DIR"
 
 if [[ -d $INSTALL_DIR ]]; then
-  echo "====> Found previous chroot. Deleting and creating a new one."
-  rm -rf $INSTALL_DIR
-  mkdir -p $INSTALL_DIR
+	echo "====> Found previous chroot. Deleting and creating a new one."
+	rm -rf $INSTALL_DIR
+	mkdir -p $INSTALL_DIR
 fi
 
 debootstrap --components=main \
-    --include=apt-transport-https,ca-certificates,curl,dbus,gettext-base,keyboard-configuration,less,locales,openssh-server,sudo,wget,vim \
-    $RELEASE $INSTALL_DIR $MIRROR
+	--include=apt-transport-https,ca-certificates,curl,dbus,gettext-base,keyboard-configuration,less,locales,openssh-server,sudo,wget,vim \
+	$RELEASE $INSTALL_DIR $MIRROR
 echo "==> Done!"
 
 echo "==> Setting TZ to UTC"
@@ -167,39 +167,39 @@ CHECK_VERSION=$(. $INSTALL_DIR/etc/os-release && echo $VERSION_ID)
 
 echo "==> Installing additional packages"
 if [[ "$CHECK_VERSION" -ge 9 ]] || [[ -z "$CHECK_VERSION" ]]; then
-  chroot $INSTALL_DIR apt-get -y install --no-install-recommends software-properties-common
+	chroot $INSTALL_DIR apt-get -y install --no-install-recommends software-properties-common
 else
-  chroot $INSTALL_DIR apt-get -y install --no-install-recommends python-software-properties software-properties-common
+	chroot $INSTALL_DIR apt-get -y install --no-install-recommends python-software-properties software-properties-common
 fi
 
 
 if [[ "$CHECK_VERSION" -ge 8 ]]; then
-  # Pin udev version for Debian 8 and newer
-  # See https://github.com/joyent/smartos-live/issues/596
-  echo "==> Pinning udev package"
-  cat << UDEV > $INSTALL_DIR/etc/apt/preferences.d/udev
-  Package: udev
-  Pin: release *
-  Pin-Priority: -1
+	# Pin udev version for Debian 8 and newer
+	# See https://github.com/joyent/smartos-live/issues/596
+	echo "==> Pinning udev package"
+	cat << UDEV > $INSTALL_DIR/etc/apt/preferences.d/udev
+	Package: udev
+	Pin: release *
+	Pin-Priority: -1
 UDEV
 
-  # Systemd overrides Debian 8 and newer
-  #
-  # See:
-  #   - https://github.com/joyent/centos-lx-brand-image-builder/issues/5
-  #   - https://github.com/joyent/centos-lx-brand-image-builder/issues/7
-  #   - https://smartos.org/bugview/OS-5304
-  #
-  # TODO: This should be removed when the relevant cgroup etc support is in
-  # the platform.
-  SERVICES=( systemd-hostnamed systemd-localed systemd-timedated )
-  
-  for SERVICE in "${SERVICES[@]}"; do
-		echo "==> Adding systemd overrides for: ${SERVICE}"
-    OVERRIDE_DIR=$INSTALL_DIR/etc/systemd/system/${SERVICE}.service.d
-    mkdir -p $OVERRIDE_DIR
+	# Systemd overrides Debian 8 and newer
+	#
+	# See:
+	#   - https://github.com/joyent/centos-lx-brand-image-builder/issues/5
+	#   - https://github.com/joyent/centos-lx-brand-image-builder/issues/7
+	#   - https://smartos.org/bugview/OS-5304
+	#
+	# TODO: This should be removed when the relevant cgroup etc support is in
+	# the platform.
+	SERVICES=( systemd-hostnamed systemd-localed systemd-timedated )
 
-    cat << OVERRIDE > ${OVERRIDE_DIR}/override.conf
+	for SERVICE in "${SERVICES[@]}"; do
+		echo "==> Adding systemd overrides for: ${SERVICE}"
+		OVERRIDE_DIR=$INSTALL_DIR/etc/systemd/system/${SERVICE}.service.d
+		mkdir -p $OVERRIDE_DIR
+
+		cat << OVERRIDE > ${OVERRIDE_DIR}/override.conf
 [Service]
 PrivateTmp=no
 PrivateDevices=no
@@ -207,7 +207,7 @@ PrivateNetwork=no
 ProtectSystem=no
 ProtectHome=no
 OVERRIDE
-  done
+	done
 fi
 
 echo "==> Cleaning up caches etc."
