@@ -15,7 +15,6 @@ IMAGE_NAME=
 DESC=
 DOCS=
 
-
 usage() {
 cat <<EOF
 
@@ -70,7 +69,6 @@ do
 			;;
 	esac
 done
-
 
 if [[ -z $TARBALL ]]; then
 	echo "==> ERROR: the install archive is required"
@@ -167,7 +165,6 @@ install_tar() {
 		zfs destroy -r zones/$IUUID
 	fi
 }
-
 
 modify_image() {
 	echo "==> Modifying the image to work in a zone..."
