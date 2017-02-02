@@ -162,6 +162,7 @@ chroot $INSTALL_DIR apt-get -y upgrade
 
 # Get release version via os-release
 VERSION_ID=
+# shellcheck source=/dev/null
 CHECK_VERSION=$(. $INSTALL_DIR/etc/os-release && echo $VERSION_ID)
 
 echo "==> Installing additional packages"
@@ -192,9 +193,9 @@ UDEV
   # TODO: This should be removed when the relevant cgroup etc support is in
   # the platform.
   SERVICES=( systemd-hostnamed systemd-localed systemd-timedated )
-  echo "==> Adding systemd overrides for: ${SERVICES[@]}"
   
-  for SERVICE in ${SERVICES[@]}; do
+  for SERVICE in "${SERVICES[@]}"; do
+		echo "==> Adding systemd overrides for: ${SERVICE}"
     OVERRIDE_DIR=$INSTALL_DIR/etc/systemd/system/${SERVICE}.service.d
     mkdir -p $OVERRIDE_DIR
 
