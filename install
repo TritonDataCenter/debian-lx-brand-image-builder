@@ -175,11 +175,11 @@ if [[ "$CHECK_VERSION" -ge 8 ]]; then
 	# Pin udev version for Debian 8 and newer
 	# See https://github.com/joyent/smartos-live/issues/596
 	echo "==> Pinning udev package"
-	cat << UDEV > $INSTALL_DIR/etc/apt/preferences.d/udev
+	cat <<-UDEV > $INSTALL_DIR/etc/apt/preferences.d/udev
 	Package: udev
 	Pin: release *
 	Pin-Priority: -1
-UDEV
+	UDEV
 
 	# Systemd overrides Debian 8 and newer
 	#
@@ -197,14 +197,14 @@ UDEV
 		OVERRIDE_DIR=$INSTALL_DIR/etc/systemd/system/${SERVICE}.service.d
 		mkdir -p $OVERRIDE_DIR
 
-		cat << OVERRIDE > ${OVERRIDE_DIR}/override.conf
-[Service]
-PrivateTmp=no
-PrivateDevices=no
-PrivateNetwork=no
-ProtectSystem=no
-ProtectHome=no
-OVERRIDE
+		cat <<-OVERRIDE > ${OVERRIDE_DIR}/override.conf
+		[Service]
+		PrivateTmp=no
+		PrivateDevices=no
+		PrivateNetwork=no
+		ProtectSystem=no
+		ProtectHome=no
+		OVERRIDE
 	done
 fi
 
