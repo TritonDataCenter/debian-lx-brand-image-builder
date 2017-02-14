@@ -176,10 +176,10 @@ if [[ "$CHECK_VERSION" -ge 8 ]]; then
 	# See https://github.com/joyent/smartos-live/issues/596
 	echo "==> Pinning udev package"
 	cat <<-UDEV > $INSTALL_DIR/etc/apt/preferences.d/udev
-	Package: udev
-	Pin: release *
-	Pin-Priority: -1
-	UDEV
+		Package: udev
+		Pin: release *
+		Pin-Priority: -1
+		UDEV
 
 	# Systemd overrides Debian 8 and newer
 	#
