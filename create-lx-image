@@ -4,15 +4,13 @@
 #
 # Create an lx-brand image from a given tar file
 
-set -euo pipefail
-IFS=$'\n\t'
-
-TRACE=
-
 if [[ -n "$TRACE" ]]; then
   export PS4='[\D{%FT%TZ}] ${BASH_SOURCE}:${LINENO}: ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
   set -o xtrace
 fi
+
+set -euo pipefail
+IFS=$'\n\t'
 
 BUILD_DATE=$(date +%Y%m%d)
 TARBALL=
@@ -32,7 +30,7 @@ Usage:
 
 Example:
   $0 -t /var/tmp/lx-debian-7-20150408.tar.gz -k 3.13.0 -m 20150316T201553Z -i lx-debian-7 -d "Debian 7 64-bit lx-brand image." -u https://docs.joyent.com/images/container-native-linux
-    
+
 OPTIONS:
   -t The full path to the tar archive
   -k The kernel version
@@ -153,13 +151,13 @@ create_dataset() {
 	echo "==> Creating dataset for image creation..."
 	zfs create zones/$IUUID
 	chmod 700 $zpath
-	
+
 	mkdir $zpath/root
 	chmod 755 $zpath/root
-	
+
 	mkdir $zpath/cores
 	chmod 755 $zpath/cores
-	
+
 	echo "==> The dataset is zones/$IUUID"
 	echo "==>"
 }
@@ -206,7 +204,7 @@ fi
 if crle -64 -c $zroot/var/ld/64/ld.config \
 	-l /native/lib/amd64:/native/usr/lib/amd64 \
 	-s /native/lib/secure/amd64:/native/usr/lib/secure/amd64 ; then
-	echo "====> Created \"$zroot/var/ld/64/ld.config\""  
+	echo "====> Created \"$zroot/var/ld/64/ld.config\""
 else
 	echo "====> Creation of \"$zroot/var/ld/64/ld.config\" failed!"
 	exit 1
@@ -217,7 +215,7 @@ cat << EOF > $zroot/etc/fstab
 none		/			zfs	defaults	1 1
 proc		/proc			proc	defaults	0 0
 EOF
-  
+
 	echo "==> Image modification complete."
 }
 
