@@ -124,10 +124,26 @@ if [[ -z ${DOCS} ]]; then
 	DOCS="https://docs.joyent.com/images/container-native-linux"
 fi
 
+umount_chroot() {
+    if grep -qs "$INSTALL_DIR/dev/pts" $INSTALL_DIR/proc/mounts; then
+        echo "====> Unmounting /dev/pts in chroot"
+        umount -lf $INSTALL_DIR/dev/pts
+    fi
+
+    if grep -qs "$INSTALL_DIR/proc" $INSTALL_DIR/proc/mounts; then
+        echo "====> Unmounting /proc in chroot"
+        umount -lf $INSTALL_DIR/proc
+    fi
+}
+
 echo "==> Installing Debian into $INSTALL_DIR"
 
 if [[ -d $INSTALL_DIR ]]; then
 	echo "====> Found previous chroot. Deleting and creating a new one."
+
+	# umount previous /proc and /dev/pts if they exist
+	umount_chroot
+
 	rm -rf $INSTALL_DIR
 	mkdir -p $INSTALL_DIR
 fi
@@ -136,6 +152,10 @@ debootstrap --components=main \
 	--include=apt-transport-https,ca-certificates,curl,dbus,gettext-base,keyboard-configuration,less,locales,openssh-server,sudo,wget,vim \
 	$RELEASE $INSTALL_DIR $MIRROR
 echo "==> Done!"
+
+echo "==> Mounting /proc and /dev/pts in chroot"
+chroot $INSTALL_DIR mount proc /proc -t proc
+chroot $INSTALL_DIR mount devpts /dev/pts -t devpts
 
 echo "==> Setting TZ to UTC"
 rm $INSTALL_DIR/etc/localtime
