@@ -160,8 +160,8 @@ SOURCES
 
 echo "==> Updating packages"
 export DEBIAN_FRONTEND=noninteractive
-chroot $INSTALL_DIR apt-get -y update
-chroot $INSTALL_DIR apt-get -y upgrade
+chroot $INSTALL_DIR apt-get -qq -y update
+chroot $INSTALL_DIR apt-get -qq -y upgrade
 
 # Get release version via os-release
 VERSION_ID=
@@ -170,9 +170,9 @@ CHECK_VERSION=$(. $INSTALL_DIR/etc/os-release && echo $VERSION_ID)
 
 echo "==> Installing additional packages"
 if [[ "$CHECK_VERSION" -ge 9 ]] || [[ -z "$CHECK_VERSION" ]]; then
-	chroot $INSTALL_DIR apt-get -y install --no-install-recommends software-properties-common
+	chroot $INSTALL_DIR apt-get -qq -y install --no-install-recommends software-properties-common
 else
-	chroot $INSTALL_DIR apt-get -y install --no-install-recommends python-software-properties software-properties-common
+	chroot $INSTALL_DIR apt-get -qq -y install --no-install-recommends python-software-properties software-properties-common
 fi
 
 if [[ "$CHECK_VERSION" -ge 8 ]]; then
@@ -213,8 +213,8 @@ if [[ "$CHECK_VERSION" -ge 8 ]]; then
 fi
 
 echo "==> Cleaning up caches etc."
-chroot $INSTALL_DIR apt-get -y autoremove
-chroot $INSTALL_DIR apt-get -y clean
+chroot $INSTALL_DIR apt-get -qq -y autoremove
+chroot $INSTALL_DIR apt-get -qq -y clean
 
 echo "==> Disabling PasswordAuthentication"
 sed -ri s/^#?PasswordAuthentication\ no/PasswordAuthentication\ no/ -i $INSTALL_DIR/etc/ssh/sshd_config
