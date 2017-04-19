@@ -155,6 +155,7 @@ echo "==> Done!"
 
 echo "==> Mounting /proc and /dev/pts in chroot"
 chroot $INSTALL_DIR mount proc /proc -t proc
+mkdir -p $INSTALL_DIR/dev/pts
 mount --bind /dev/pts $INSTALL_DIR/dev/pts
 
 echo "==> Setting TZ to UTC"
