@@ -292,4 +292,7 @@ tar czf $TARGET --exclude-from=exclude.txt $INSTALL_DIR/
 echo "==> Installation complete!"
 echo "==> $TARGET"
 
+# umount previous /proc and /dev/pts if they exist
+umount_chroot
+
 exit 0
