@@ -149,7 +149,7 @@ if [[ -d $INSTALL_DIR ]]; then
 fi
 
 debootstrap --components=main \
-	--include=acpid,apt-transport-https,ca-certificates,curl,dbus,gettext-base,keyboard-configuration,less,locales,net-tools,ntp,openssh-server,parted,sudo,wget,vim \
+	--include=acpid,apt-transport-https,ca-certificates,curl,dbus,gettext-base,keyboard-configuration,less,locales,ntp,openssh-server,parted,sudo,wget,vim \
 	$RELEASE $INSTALL_DIR $MIRROR
 echo "==> Done!"
 
