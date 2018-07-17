@@ -47,7 +47,6 @@ Example:
     $0 -f debian-7-20150319.zfs.gz -k 3.4.105 -m 20150316T201553Z -n lx-debian-7 -v 20150319
 
 USAGE
-	exit 1
 }
 
 while getopts d:f:k:m:n:o:v:h:? OPTION
@@ -79,6 +78,7 @@ do
 		;;
 	\?)
 		usage
+		exit
 		;;
 	esac
 done
@@ -86,6 +86,7 @@ done
 if [[ -z ${filename} || -z ${kernel} || -z ${min_platform} || -z ${name} || -z ${version} ]]; then
 	echo "FATAL: All of -f, -k, -m, -n and -v are required."
 	usage
+	exit 1
 fi
 
 if [[ -z ${description} ]]; then
@@ -103,6 +104,7 @@ fi
 if [[ ! -f ${filename} ]]; then
 	echo "FATAL: ${filename} does not exist."
 	usage
+	exit 1
 fi
 
 shasum=$($SUM -x sha1 ${filename} | cut -d' ' -f1)
