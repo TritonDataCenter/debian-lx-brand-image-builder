@@ -52,6 +52,20 @@ do
 			;;
 		t)
 			TARBALL=${OPTARG}
+
+			[ ! -e "$TARBALL" ] && echo "==> ERROR: ${TARBALL}: file or directory not found" && exit 1
+			[ ! -f "$TARBALL" ] && echo "==> ERROR: $TARBALL must be a file" && exit 1
+			[ ! -r "$TARBALL" ] && echo "==> ERROR: $TARBALL is not readable" && exit 1
+			[ "${TARBALL:0:1}" != "/" ] && echo "==> ERROR: the pathname '$TARBALL' specified to '-t' must be absolute" && exit 1
+
+			filetype=$(LC_ALL=C file -b "$TARBALL" 2> /dev/null)
+			case "$filetype" in
+				gzip*)       gtaropts="-xzf" ;;
+				bzip2*)      gtaropts="-xjf" ;;
+				compressed*) gtaropts="-xZf" ;;
+				USTAR*)      gtaropts="-xf"  ;;
+				*) echo "==> ERROR: $TARBALL must be a gzip, bzip2, .Z, or uncompressed tar archive." && exit 1 ;;
+			esac
 			;;
 		k)
 			KERNEL=${OPTARG}
@@ -80,44 +94,7 @@ fi
 
 [ -z "$DOCS" ] && DOCS="https://docs.joyent.com/images/container-native-linux"
 
-if [[ ! -a "$TARBALL" ]]; then
-	printf '==> ERROR: %s: file or directory not found\n' "$TARBALL"
-	exit 1
-fi
-
-if [[ "$(echo $TARBALL | cut -c 1)" != "/" ]]; then
-	printf '==> Pathname '%s' specified to -t must be absolute\n' "$TARBALL"
-	exit 1
-fi
-
-if [[ ! -r "$TARBALL" ]]; then
-	printf '==> Cannot read file '%s'\n' "$TARBALL"
-	exit 1
-fi
-
-if [[ ! -f "$TARBALL" ]]; then
-	echo "==> ERROR: must be a gzip, bzip2, .Z or uncompressed tar archive"
-	exit 1
-fi
-
 IUUID=${IMAGE_NAME}-$BUILD_DATE
-
-filetype=$({ LC_ALL=C file $TARBALL | awk '{print $2}' ; } 2>/dev/null)
-
-if [[ "$filetype" = "gzip" ]]; then
-	gtaropts="-xz"
-elif [[ "$filetype" = "bzip2" ]]; then
-	gtaropts="-xj"
-elif [[ "$filetype" = "compressed" ]]; then
-	gtaropts="-xZ"
-elif [[ "$filetype" = "USTAR" ]]; then
-	gtaropts="-x"
-else
-	printf "==> ERROR: must be a gzip, bzip2, .Z or uncompressed tar archive"
-	exit 1
-fi
-
-gtaropts="${gtaropts}f"
 
 zpath="/zones/$IUUID"
 zroot="/zones/$IUUID/root"
