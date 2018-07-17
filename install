@@ -22,7 +22,7 @@ cat <<EOF
 Install and modify Debian in a given directory in a given directory using a given mirror
 
 Usage:
-  $0 -r <RELEASE> -d <INSTALL_DIR> -m <MIRROR> -i <IMAGE_NAME> -p <NAME> -D <DESC> -u <DOCS>
+  $0 -r <RELEASE> -d <INSTALL_DIR> -m <MIRROR> -i <IMAGE_NAME> -p <NAME> -D <DESC> [-u <DOCS>]
 
 Example:
   $0 -r wheezy -d /data/chroot -m http://httpredir.debian.org/debian/ -i lx-debian-7 -p "Debian 7 LX Brand" -D "Debian 7 64-bit lx-brand image." -u https://docs.joyent.com/images/container-native-linux
