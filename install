@@ -79,38 +79,14 @@ do
 	esac
 done
 
-if [[ $# -eq 0 ]]; then
+if [[ -z "$RELEASE" || "$INSTALL_DIR" || "$MIRROR" || "$IMAGE_NAME" || "$NAME" ]]; then
+	printf 'FATAL: -r, -d, -m, -i, and -p are all required.\n'
 	usage
-	exit 1
-fi
-
-if [[ -z ${RELEASE} ]]; then
-	echo "Error: missing release (-r) value"
 	exit 1
 fi
 
 if [[ ! -e ${INSTALL_DIR} ]] ; then
 	echo "Directory $INSTALL_DIR not found"
-	exit 1
-fi
-
-if [[ -z ${INSTALL_DIR} ]]; then
-	echo "Error: missing install directory (-d) value"
-	exit 1
-fi
-
-if [[ -z ${MIRROR} ]]; then
-	echo "Error: missing mirror (-m) value"
-	exit 1
-fi
-
-if [[ -z ${IMAGE_NAME} ]]; then
-	echo "Error: missing image name (-i) value"
-	exit 1
-fi
-
-if [[ -z ${NAME} ]]; then
-	echo "Error: missing proper name (-p) value"
 	exit 1
 fi
 

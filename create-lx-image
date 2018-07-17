@@ -71,11 +71,14 @@ do
 	esac
 done
 
-if [[ -z $TARBALL ]]; then
-	echo "==> ERROR: the install archive is required"
+if [[ -z "$TARBALL" || -z "$KERNEL" || -z "$MIN_PLATFORM" || \
+      -z "$IMAGE_NAME" || -z "$DESC" ]] ; then
+	printf 'FATAL: -t, -k, -m, -i, and -d options are all required.\n'
 	usage
 	exit 1
 fi
+
+[ -z "$DOCS" ] && DOCS="https://docs.joyent.com/images/container-native-linux"
 
 if [[ ! -a "$TARBALL" ]]; then
 	printf '==> ERROR: %s: file or directory not found\n' "$TARBALL"
@@ -95,30 +98,6 @@ fi
 if [[ ! -f "$TARBALL" ]]; then
 	echo "==> ERROR: must be a gzip, bzip2, .Z or uncompressed tar archive"
 	exit 1
-fi
-
-if [[ -z ${KERNEL} ]]; then
-	echo "Error: missing kernel version (-k) value"
-	exit 1
-fi
-
-if [[ -z ${MIN_PLATFORM} ]]; then
-	echo "Error: missing minimum platform (-m) value"
-	exit 1
-fi
-
-if [[ -z ${IMAGE_NAME} ]]; then
-	echo "Error: missing image name (-i) value"
-	exit 1
-fi
-
-if [[ -z ${DESC} ]]; then
-	echo "Error: missing image description (-d) value"
-	exit 1
-fi
-
-if [[ -z ${DOCS} ]]; then
-	DOCS="https://docs.joyent.com/images/container-native-linux"
 fi
 
 IUUID=${IMAGE_NAME}-$BUILD_DATE
