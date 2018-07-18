@@ -1,6 +1,6 @@
 # Debian lx-brand Image Builder
 
-[![Build Status](https://travis-ci.org/joyent/debian-lx-brand-image-builder.svg?branch=master)](https://travis-ci.org/joyent/debian-lx-brand-image-builder) (shecllcheck)
+[![Build Status](https://travis-ci.org/joyent/debian-lx-brand-image-builder.svg?branch=master)](https://travis-ci.org/joyent/debian-lx-brand-image-builder) (shellcheck)
 
 This is a collection of scripts used for creating an lx-brand Debian image.
 
