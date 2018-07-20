@@ -1,8 +1,7 @@
-language: bash
-addons:
-  apt:
-    sources:
-    - debian-sid    # Grab ShellCheck from the Debian repo
-    packages:
-    - shellcheck
+sudo: required
+dist: trusty
+before_install:
+  - sudo add-apt-repository 'deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse'
+  - sudo apt-get update -q
+  - sudo apt-get install shellcheck -y
 script: shellcheck -e SC2086 -s bash create-lx-image create-manifest install
